@@ -1,0 +1,38 @@
+syntax = "proto3";
+package pb;
+option go_package = "src/grpc";
+// ------------------------------------
+message blank{}
+
+message Category {
+    string ID = 1;
+    string Name = 2;
+    string Description = 3;
+}
+
+message CategoryRequest {
+    string Name = 2;
+    string Description = 3;
+}
+
+message CategoryResponse {
+    repeated Category Category = 1;
+}
+
+message CategoryDeleteRequest {
+    string ID = 1;
+}
+
+service CategoryService {
+    rpc GetAllCategory (blank) returns (CategoryResponse) {}
+    rpc CreateProtoCategory (CategoryRequest) returns (Category) {}
+    rpc DeleteProtoCategory (Category) returns (Category) {}
+    rpc UpdateProtoCategory (CategoryRequest) returns (Category) {}
+    // client streaming
+    rpc CreateProtoCategoryStream (stream CategoryRequest) returns (CategoryResponse) {}
+    rpc DeleteProtoCategoryStream (stream CategoryDeleteRequest) returns (CategoryResponse) {}
+    // server streaming
+    rpc CreateProtoCategoryServerStream (CategoryRequest) returns (stream CategoryResponse) {}
+    // bidirectional streaming
+    rpc CreateProtoCategoryBidirectionalStream (stream CategoryRequest) returns (stream CategoryResponse) {}
+}
